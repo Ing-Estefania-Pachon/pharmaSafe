@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Estadísticas del Cruce de Datos -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 p-4 text-white bg-indigo h-100">
+            <h5 class="fw-bold"><i class="fa-solid fa-code-merge me-2"></i>Resultados del Merge Relacional</h5>
+            <p class="small text-white-50">
+                Se ha realizado un triple cruce relacional directo en la memoria RAM utilizando Pandas para comparar la matriz de incidentes reales frente a las guías de dosificación y alertas del catálogo de fármacos.
+            </p>
+            <div class="d-flex justify-content-around mt-3">
+                <div class="text-center">
+                    <span class="d-block display-6 fw-bold text-white">{{ total_cruzados }}</span>
+                    <span class="small text-white-50">Incidentes Auditados</span>
+                </div>
+                <div class="vr text-white-50"></div>
+                <div class="text-center">
+                    <span class="d-block display-6 fw-bold text-emerald">{{ con_guia }}</span>
+                    <span class="small text-white-50">Con Guía de Dosis Activa</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <h5 class="fw-bold text-indigo"><i class="fa-solid fa-network-wired me-2"></i>Estructura del Cruce en Memoria</h5>
+            <p class="text-muted small">
+                Para lograr esta vista de auditoría, unimos los tres archivos CSV relacionándolos en caliente:
+            </p>
+            <div class="small text-muted">
+                <i class="fa-solid fa-arrow-right text-purple me-2"></i><code>incidentes_farmacovigilancia</code> <strong>LEFT JOIN</strong> <code>catalogo_medicamentos_pediatricos</code> <em>(en principio_activo)</em>
+                <br>
+                <i class="fa-solid fa-arrow-right text-purple me-2"></i><strong>LEFT JOIN</strong> <code>guia_dosificacion_pediatrica</code> <em>(en cie10_codigo, grupo_etario, medicamento)</em>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabla de Auditoría Consolidada -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <div class="d-flex align-items-center mb-3">
+                <div class="icon-shape bg-indigo-light text-indigo rounded-3 me-3">
+                    <i class="fa-solid fa-clipboard-check fs-4"></i>
+                </div>
+                <h5 class="m-0 fw-bold text-indigo">Vista de Auditoría de Dosificación y Alertas</h5>
+            </div>
+            
+            <div class="table-responsive" style="max-height: 550px; overflow-y: auto;">
+                <table class="table table-hover align-middle table-borderless">
+                    <thead class="table-light sticky-top" style="z-index: 1;">
+                        <tr class="text-indigo small text-uppercase fw-bold" style="font-size: 0.75rem;">
+                            <th>ID</th>
+                            <th>Medicamento</th>
+                            <th>Diagnóstico (CIE10)</th>
+                            <th>Grupo Etario</th>
+                            <th>Alertas LASA</th>
+                            <th>Riesgo Prep. (Catálogo)</th>
+                            <th>Dosis Rec. (Guía)</th>
+                            <th>Dosis Total (Teórica)</th>
+                            <th>Auditoría Clín.</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-muted small" style="font-size: 0.8rem;">
+                        {% for reg in registros %}
+                        <tr>
+                            <td class="fw-bold text-dark">{{ reg.id_incidente }}</td>
+                            <td class="fw-semibold text-indigo">{{ reg.medicamento }}</td>
+                            <td>{{ reg.cie10_diagnostico }} ({{ reg.cie10_codigo }})</td>
+                            <td>{{ reg.grupo_etario }}</td>
+                            <td>
+                                {% if reg.alerta_lasa | lower == 'sí' %}
+                                <span class="badge bg-red-light text-red"><i class="fa-solid fa-eye me-1"></i>LASA Activo</span>
+                                {% else %}
+                                <span class="text-muted">No</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if reg.riesgo_preparacion | lower == 'alto' %}
+                                <span class="badge bg-red-light text-red">Alto</span>
+                                {% elif reg.riesgo_preparacion | lower == 'medio' %}
+                                <span class="badge bg-naranja-light text-naranja">Medio</span>
+                                {% else %}
+                                <span class="text-muted">{{ reg.riesgo_preparacion }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if reg.dosis_recomendada_mg_kg > 0 %}
+                                    {{ reg.dosis_recomendada_mg_kg }} mg/kg
+                                {% else %}
+                                    <span class="text-muted-50">No disponible</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if reg.dosis_total_teorica_mg > 0 %}
+                                    <strong>{{ reg.dosis_total_teorica_mg }} mg</strong>
+                                {% else %}
+                                    <span class="text-muted-50">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if reg.tiene_guia == 'Sí' %}
+                                <span class="badge bg-emerald-light text-emerald px-2 py-1 rounded"><i class="fa-solid fa-check me-1"></i>Verificado vs Guía</span>
+                                {% else %}
+                                <span class="badge bg-light text-muted px-2 py-1 rounded"><i class="fa-solid fa-circle-minus me-1"></i>Sin Parámetro</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

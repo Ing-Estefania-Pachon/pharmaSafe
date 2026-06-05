@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Fila de Gráficos de Incidentes -->
+<div class="row g-4 mb-4">
+    <!-- Gráfico 1: Medicamentos -->
+    <div class="col-lg-6 col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <h6 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-pills me-2"></i>Medicamentos Involucrados</h6>
+            <div class="text-center">
+                <img src="data:image/png;base64,{{ grafico1 }}" class="img-fluid rounded" alt="Gráfico de Medicamentos más Involucrados">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gráfico 3: Etapas -->
+    <div class="col-lg-6 col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <h6 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-diagram-project me-2"></i>Distribución por Etapa de Atención</h6>
+            <div class="text-center">
+                <img src="data:image/png;base64,{{ grafico3 }}" class="img-fluid rounded" alt="Gráfico de Incidentes por Etapa">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Listado Transaccional de Incidentes -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <div class="d-flex align-items-center mb-3 justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div class="icon-shape bg-indigo-light text-indigo rounded-3 me-3">
+                        <i class="fa-solid fa-list-check fs-4"></i>
+                    </div>
+                    <h5 class="m-0 fw-bold text-indigo">Listado General de Incidentes</h5>
+                </div>
+                <span class="badge bg-indigo-light text-indigo px-3 py-2 rounded-pill small">
+                    {{ incidentes | length }} Registros Cargados
+                </span>
+            </div>
+            
+            <!-- Tabla responsiva en contenedor scrollable -->
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-hover align-middle table-borderless">
+                    <thead class="table-light sticky-top" style="z-index: 1;">
+                        <tr class="text-indigo small text-uppercase fw-bold">
+                            <th>ID Incidente</th>
+                            <th>Fecha</th>
+                            <th>Edad</th>
+                            <th>Medicamento</th>
+                            <th>Tipo de Incidente</th>
+                            <th>Etapa del Proceso</th>
+                            <th>Severidad</th>
+                            <th>Daño Paciente</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-muted small">
+                        {% for inc in incidentes %}
+                        <tr>
+                            <td class="fw-bold text-dark">{{ inc.id_incidente }}</td>
+                            <td>{{ inc.fecha }}</td>
+                            <td>{{ inc.edad_meses }} meses</td>
+                            <td class="fw-semibold text-indigo">{{ inc.medicamento }}</td>
+                            <td>{{ inc.tipo_incidente }}</td>
+                            <td><span class="badge bg-light text-dark">{{ inc.etapa_proceso }}</span></td>
+                            <td>
+                                {% if inc.severidad == 'Leve' %}
+                                <span class="badge bg-emerald-light text-emerald rounded-pill px-3">{{ inc.severidad }}</span>
+                                {% elif inc.severidad == 'Moderada' %}
+                                <span class="badge bg-naranja-light text-naranja rounded-pill px-3">{{ inc.severidad }}</span>
+                                {% elif inc.severidad == 'Grave' %}
+                                <span class="badge bg-red-light text-red rounded-pill px-3">{{ inc.severidad }}</span>
+                                {% else %}
+                                <span class="badge bg-dark text-white rounded-pill px-3">{{ inc.severidad }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ inc.dano_paciente }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

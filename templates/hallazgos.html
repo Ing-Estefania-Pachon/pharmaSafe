@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Resumen de Hallazgos Automáticos -->
+    <div class="col-12 mb-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 border-start border-4 border-indigo">
+            <h5 class="fw-bold text-indigo"><i class="fa-solid fa-microscope me-2"></i>Hallazgos Analíticos Automáticos</h5>
+            <p class="text-muted small">
+                Analizando el comportamiento general del dataset de farmacovigilancia, el motor de inferencia arroja los siguientes datos prioritarios:
+            </p>
+            <div class="row g-4 mt-1">
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded-3">
+                        <span class="text-muted small d-block text-uppercase">Medicamento Más Conflictivo</span>
+                        <strong class="text-indigo fs-5 d-block">{{ insights.top_med }}</strong>
+                        <span class="text-muted small" style="font-size: 0.75rem;">Requiere revisión inmediata de guías</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded-3">
+                        <span class="text-muted small d-block text-uppercase">Etapa Crítica del Proceso</span>
+                        <strong class="text-indigo fs-5 d-block">{{ insights.top_etapa }}</strong>
+                        <span class="text-muted small" style="font-size: 0.75rem;">Concentración de fallos operativos</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded-3">
+                        <span class="text-muted small d-block text-uppercase">Porcentaje de Gravedad Crítica</span>
+                        <strong class="text-red fs-5 d-block">{{ insights.porcentaje_criticos }}%</strong>
+                        <span class="text-muted small" style="font-size: 0.75rem;">Pacientes con daño o severidad grave</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Recomendaciones Clínicas e Institucionales -->
+    <div class="col-lg-7 col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <h5 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-prescription-bottle-medical me-2"></i>Recomendaciones Clínicas e Institucionales</h5>
+            
+            <div class="d-flex mb-3">
+                <div class="me-3">
+                    <span class="badge bg-indigo text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px;">1</span>
+                </div>
+                <div>
+                    <h6 class="fw-bold text-dark mb-1">Doble Chequeo en Etapa de Administración</h6>
+                    <p class="text-muted small mb-0" style="font-size: 0.8rem;">
+                        La etapa de administración es una de las más vulnerables. Se sugiere implementar un sistema de lectura de código de barras al pie de cama del paciente pediátrico para comprobar la correspondencia entre la prescripción y el fármaco dispensado.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="d-flex mb-3">
+                <div class="me-3">
+                    <span class="badge bg-indigo text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px;">2</span>
+                </div>
+                <div>
+                    <h6 class="fw-bold text-dark mb-1">Diferenciación Visual y Alertas LASA</h6>
+                    <p class="text-muted small mb-0" style="font-size: 0.8rem;">
+                        Para los principios activos identificados bajo riesgo de confusión (como Amoxicilina y Ampicilina), se recomienda aplicar etiquetas de colores de advertencia (Amarillo/Rojo) y establecer un almacenamiento separado físicamente en los estantes de farmacia.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="d-flex mb-0">
+                <div class="me-3">
+                    <span class="badge bg-indigo text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px;">3</span>
+                </div>
+                <div>
+                    <h6 class="fw-bold text-dark mb-1">Capacitación y Guías de Dosificación Pediátrica</h6>
+                    <p class="text-muted small mb-0" style="font-size: 0.8rem;">
+                        La variabilidad de peso en pacientes pediátricos (lactante, preescolar, escolar) hace obligatoria la consulta de tablas puente de dosificación. Se debe informatizar la guía clínica de dosis teórica recomendada dentro de la historia clínica digital del hospital.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conclusiones del Proyecto (Sustentación) -->
+    <div class="col-lg-5 col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-light-viewport">
+            <h5 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-graduation-cap me-2"></i>Conclusiones del Proyecto</h5>
+            <p class="text-muted small" style="font-size: 0.8rem;">
+                Este panel interactivo demuestra que es factible e idóneo reemplazar herramientas costosas de BI por un backend en Python altamente personalizado.
+            </p>
+            <p class="text-muted small" style="font-size: 0.8rem;">
+                El uso de **Pandas** proporciona un control granular y reproducible sobre el filtrado y modelado de datos, mientras que **Matplotlib** permite compilar y renderizar de forma segura las imágenes sin sobrecargar el almacenamiento físico del servidor.
+            </p>
+            <p class="text-muted small mb-0" style="font-size: 0.8rem; font-style: italic;">
+                "La farmacovigilancia no es solo contar errores; es programar salvaguardas para proteger la vida de la población pediátrica."
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

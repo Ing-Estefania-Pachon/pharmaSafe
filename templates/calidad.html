@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+    <!-- Resumen de Filas y Duplicados -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+            <h6 class="text-muted text-uppercase small fw-bold">Total Registros Ingestados</h6>
+            <h1 class="display-4 fw-bold text-indigo my-2">{{ calidad.total_filas }}</h1>
+            <p class="small text-muted mb-0"><i class="fa-solid fa-file-csv me-2"></i>Dataset transaccional de incidentes</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+            <h6 class="text-muted text-uppercase small fw-bold">Registros Duplicados</h6>
+            <h1 class="display-4 fw-bold {% if calidad.duplicados > 0 %}text-red{% else %}text-emerald{% endif %} my-2">
+                {{ calidad.duplicados }}
+            </h1>
+            <p class="small text-muted mb-0">
+                {% if calidad.duplicados > 0 %}
+                Se requiere limpieza o desduplicación.
+                {% else %}
+                <i class="fa-solid fa-circle-check me-2"></i>Datos limpios de duplicidad física.
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <h6 class="text-indigo text-uppercase small fw-bold mb-3"><i class="fa-solid fa-microscope me-2"></i>Metodología de Calidad</h6>
+            <p class="text-muted small mb-0" style="font-size: 0.8rem;">
+                Utilizando los comandos nativos de la librería Pandas (<code>df.isnull()</code>, <code>df.duplicated()</code>, <code>df.info()</code>), auditamos el estado del data lake relacional en memoria para garantizar que el análisis sea seguro antes de inyectar las métricas clínicas en el frontend.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Tabla de Perfilado de Columnas (Nulos y Tipos) -->
+    <div class="col-lg-7 col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <h5 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-table-columns me-2"></i>Perfilamiento de Columnas (Incidentes)</h5>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle table-borderless">
+                    <thead class="table-light">
+                        <tr class="text-indigo small text-uppercase fw-bold" style="font-size: 0.75rem;">
+                            <th>Columna</th>
+                            <th>Tipo de Variable (Dtype)</th>
+                            <th>Valores Nulos</th>
+                            <th>% Completitud</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-muted small" style="font-size: 0.8rem;">
+                        {% for col in calidad.columnas_tabla %}
+                        <tr>
+                            <td class="fw-semibold text-dark"><code>{{ col.columna }}</code></td>
+                            <td><span class="badge bg-light text-dark">{{ col.tipo_dato }}</span></td>
+                            <td class="{% if col.valores_nulos > 0 %}text-red fw-bold{% else %}text-muted{% endif %}">
+                                {{ col.valores_nulos }}
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2">{{ 100.0 - col.porcentaje_nulos }}%</span>
+                                    <div class="progress flex-grow-1" style="height: 6px;">
+                                        <div class="progress-bar {% if col.porcentaje_nulos > 10 %}bg-naranja{% elif col.porcentaje_nulos > 0 %}bg-indigo{% else %}bg-emerald{% endif %}" 
+                                             role="progressbar" 
+                                             style="width: {{ 100.0 - col.porcentaje_nulos }}%;" 
+                                             aria-valuenow="{{ 100.0 - col.porcentaje_nulos }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla Descriptiva (describe) -->
+    <div class="col-lg-5 col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <h5 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-calculator me-2"></i>Estadística Descriptiva (Variables Continuas)</h5>
+            <p class="text-muted small" style="font-size: 0.8rem;">
+                Resultado del cálculo matemático <code>df['edad_meses'].describe()</code> mapeado a métricas legibles:
+            </p>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle table-borderless">
+                    <thead class="table-light">
+                        <tr class="text-indigo small text-uppercase fw-bold" style="font-size: 0.75rem;">
+                            <th>Métrica Estadística</th>
+                            <th class="text-end">Edad (Meses)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-muted small" style="font-size: 0.8rem;">
+                        {% for item in calidad.describir_tabla %}
+                        <tr>
+                            <td class="fw-semibold text-dark">{{ item.Métrica }}</td>
+                            <td class="text-end fw-bold text-indigo">{{ item['Edad (Meses)'] | round(2) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

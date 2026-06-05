@@ -1,0 +1,174 @@
+/* 
+   PharmaSafe Analytics - CSS Custom Stylesheet
+   Medical Dashboard Design System
+*/
+
+:root {
+    --indigo-900: #312e81;
+    --indigo-600: #4f46e5;
+    --indigo-100: #e0e7ff;
+    --emerald-500: #10b981;
+    --emerald-100: #d1fae5;
+    --purple-500: #a855f7;
+    --purple-100: #f3e8ff;
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-700: #334155;
+    --red-500: #ef4444;
+    --red-100: #fee2e2;
+    --naranja-500: #f59e0b;
+    --naranja-100: #fef3c7;
+}
+
+body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--slate-50);
+    color: var(--slate-700);
+    overflow-x: hidden;
+}
+
+/* Wrapper Layout */
+#wrapper {
+    min-height: 100vh;
+}
+
+/* Sidebar Fijo con Gradiente */
+.sidebar-container {
+    min-width: 280px;
+    max-width: 280px;
+    background: linear-gradient(180deg, var(--indigo-900) 0%, var(--indigo-600) 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.sidebar-heading {
+    padding: 1.5rem 1.5rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.sidebar-heading .subtitle {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 2px;
+}
+
+.sidebar-container .list-group-item {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.75);
+    padding: 0.9rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.sidebar-container .list-group-item:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    padding-left: 1.75rem;
+}
+
+.sidebar-container .list-group-item.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-left: 4px solid var(--emerald-500);
+    font-weight: 600;
+}
+
+.sidebar-footer {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    font-size: 0.8rem;
+}
+
+/* Page Content Wrapper */
+#page-content-wrapper {
+    min-width: 0;
+}
+
+/* Background del viewport principal */
+.bg-light-viewport {
+    background-color: var(--slate-50);
+    min-height: calc(100vh - 72px);
+}
+
+/* Custom Text and Utility Colors */
+.text-indigo { color: var(--indigo-900) !important; }
+.bg-indigo-light { background-color: var(--indigo-100) !important; }
+.bg-indigo { background-color: var(--indigo-900) !important; }
+
+.text-red { color: var(--red-500) !important; }
+.bg-red-light { background-color: var(--red-100) !important; }
+.bg-red { background-color: var(--red-500) !important; }
+
+.text-emerald { color: var(--emerald-500) !important; }
+.bg-emerald-light { background-color: var(--emerald-100) !important; }
+.btn-emerald { 
+    background-color: var(--emerald-500); 
+    border-color: var(--emerald-500);
+    color: white;
+}
+.btn-emerald:hover {
+    background-color: #059669;
+    border-color: #059669;
+    color: white;
+}
+
+.text-purple { color: var(--purple-500) !important; }
+.bg-purple-light { background-color: var(--purple-100) !important; }
+
+.text-naranja { color: var(--naranja-500) !important; }
+.bg-naranja-light { background-color: var(--naranja-100) !important; }
+.bg-naranja { background-color: var(--naranja-500) !important; }
+
+/* Welcome Card Jumbotron */
+.card-welcome-gradient {
+    background: linear-gradient(135deg, var(--indigo-900) 0%, var(--indigo-600) 100%);
+}
+
+/* Shapes and icons */
+.icon-shape {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+}
+
+/* Custom Cards */
+.card-hover-effect {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover-effect:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Micro-animations */
+.list-group-item-action {
+    position: relative;
+}
+
+/* Responsive Sidebar adjustments */
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -280px;
+    }
+    #wrapper.toggled #sidebar {
+        margin-left: 0;
+    }
+    .sidebar-container {
+        position: fixed;
+        z-index: 1000;
+        height: 100vh;
+    }
+}

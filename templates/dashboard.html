@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Fila de KPIs -->
+<div class="row g-4 mb-4">
+    <!-- Total Incidentes -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 card-hover-effect">
+            <div class="d-flex align-items-center">
+                <div class="icon-shape bg-indigo-light text-indigo rounded-3 me-3">
+                    <i class="fa-solid fa-folder-open fs-3"></i>
+                </div>
+                <div>
+                    <span class="text-muted small d-block text-uppercase fw-semibold">Total Incidentes</span>
+                    <h3 class="m-0 fw-bold text-dark">{{ kpis.total_incidentes }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incidentes Críticos -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 card-hover-effect">
+            <div class="d-flex align-items-center">
+                <div class="icon-shape bg-red-light text-red rounded-3 me-3">
+                    <i class="fa-solid fa-triangle-exclamation fs-3"></i>
+                </div>
+                <div>
+                    <span class="text-muted small d-block text-uppercase fw-semibold">Incidentes Críticos</span>
+                    <h3 class="m-0 fw-bold text-red">{{ kpis.criticos }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fármacos Involucrados -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 card-hover-effect">
+            <div class="d-flex align-items-center">
+                <div class="icon-shape bg-purple-light text-purple rounded-3 me-3">
+                    <i class="fa-solid fa-pills fs-3"></i>
+                </div>
+                <div>
+                    <span class="text-muted small d-block text-uppercase fw-semibold">Fármacos Involucrados</span>
+                    <h3 class="m-0 fw-bold text-dark">{{ kpis.farmacos }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edad Promedio -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100 card-hover-effect">
+            <div class="d-flex align-items-center">
+                <div class="icon-shape bg-emerald-light text-emerald rounded-3 me-3">
+                    <i class="fa-solid fa-child fs-3"></i>
+                </div>
+                <div>
+                    <span class="text-muted small d-block text-uppercase fw-semibold">Edad Promedio</span>
+                    <h4 class="m-0 fw-bold text-dark" style="font-size: 1.3rem;">
+                        {{ kpis.edad_promedio_anos }} años <span class="text-muted" style="font-size: 0.9rem;">({{ kpis.edad_promedio_meses }} m)</span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fila Principal de Gráficos e Insights -->
+<div class="row g-4">
+    <!-- Columna Izquierda: Visualización Gráfica -->
+    <div class="col-lg-8">
+        <div class="row g-4">
+            <!-- Gráfico 1: Medicamentos -->
+            <div class="col-md-6 col-12">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                    <h6 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-chart-bar me-2"></i>Medicamentos en Conflicto</h6>
+                    <div class="text-center">
+                        <img src="data:image/png;base64,{{ grafico1 }}" class="img-fluid rounded" alt="Gráfico de Medicamentos más Involucrados">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gráfico 2: Severidad -->
+            <div class="col-md-6 col-12">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                    <h6 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-chart-pie me-2"></i>Nivel de Severidad</h6>
+                    <div class="text-center">
+                        <img src="data:image/png;base64,{{ grafico2 }}" class="img-fluid rounded" alt="Gráfico de Severidad de Incidentes">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna Derecha: Insights y Alertas de Riesgo -->
+    <div class="col-lg-4">
+        <div class="d-flex flex-column h-100 justify-content-between">
+            <!-- Insight del Día -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 flex-grow-1">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="icon-shape bg-purple-light text-purple rounded-3 me-3">
+                        <i class="fa-regular fa-lightbulb fs-4"></i>
+                    </div>
+                    <h6 class="m-0 fw-bold text-purple">Insight del Día</h6>
+                </div>
+                <div class="insight-text text-muted small">
+                    {{ insight_dia | safe }}
+                </div>
+            </div>
+            
+            <!-- Alerta de Riesgo Destacada -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 border-start border-4 border-red flex-grow-1">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="icon-shape bg-red-light text-red rounded-3 me-3">
+                        <i class="fa-solid fa-circle-exclamation fs-4"></i>
+                    </div>
+                    <h6 class="m-0 fw-bold text-red">Alerta de Riesgo Destacada</h6>
+                </div>
+                <div class="insight-text text-muted small">
+                    {{ alerta_riesgo | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

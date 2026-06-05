@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Jumbotron Bienvenida -->
+    <div class="col-12 mb-4">
+        <div class="card border-0 shadow-sm rounded-4 text-white card-welcome-gradient p-4 p-md-5">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-5 fw-bold mb-2">PharmaSafe Analytics</h1>
+                    <p class="lead mb-4 text-white-50">Sistema de Análisis Exploratorio y Auditoría Relacional en Memoria para Farmacovigilancia Pediátrica.</p>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-emerald btn-lg px-4 me-md-2 rounded-pill fw-semibold">
+                        <i class="fa-solid fa-chart-line me-2"></i>Ir al Dashboard
+                    </a>
+                    <a href="#metodologia" class="btn btn-outline-light btn-lg px-4 rounded-pill fw-semibold">
+                        Conocer Metodología
+                    </a>
+                </div>
+                <div class="col-lg-4 d-none d-lg-block text-center">
+                    <i class="fa-solid fa-user-shield text-emerald" style="font-size: 8rem; opacity: 0.85;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Arquitectura de Datos -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4">
+            <div class="d-flex align-items-center mb-3">
+                <div class="icon-shape bg-indigo-light text-indigo rounded-3 me-3">
+                    <i class="fa-solid fa-folder-tree fs-4"></i>
+                </div>
+                <h5 class="m-0 fw-bold text-indigo">Arquitectura de Datos</h5>
+            </div>
+            <p class="text-muted small">
+                El sistema ingesta y procesa de forma directa y reproducible tres fuentes de datos en formato CSV simuladas bajo estándares reales (CIE-10 y directrices de Minsalud):
+            </p>
+            <ul class="list-unstyled mb-0 text-muted small">
+                <li class="mb-2"><i class="fa-solid fa-circle-check text-indigo me-2"></i><strong>Transaccional:</strong> 150 registros de incidentes de farmacovigilancia.</li>
+                <li class="mb-2"><i class="fa-solid fa-circle-check text-indigo me-2"></i><strong>Catálogo Dimensional:</strong> Alertas LASA, vías y perfiles.</li>
+                <li class="mb-0"><i class="fa-solid fa-circle-check text-indigo me-2"></i><strong>Golden Record:</strong> Guías clínicas y dosis recomendadas.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Metodología Analítica -->
+    <div class="col-md-6 col-lg-4" id="metodologia">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4">
+            <div class="d-flex align-items-center mb-3">
+                <div class="icon-shape bg-purple-light text-purple rounded-3 me-3">
+                    <i class="fa-solid fa-brain fs-4"></i>
+                </div>
+                <h5 class="m-0 fw-bold text-purple">Metodología Analítica</h5>
+            </div>
+            <p class="text-muted small">
+                Se implementa un flujo programático transparente que reemplaza software propietario (como Power BI) por código ejecutable nativo en Python:
+            </p>
+            <ul class="list-unstyled mb-0 text-muted small">
+                <li class="mb-2"><i class="fa-solid fa-circle-check text-purple me-2"></i><strong>Limpieza y Perfilamiento:</strong> Detección de nulos con <code>isnull()</code>.</li>
+                <li class="mb-2"><i class="fa-solid fa-circle-check text-purple me-2"></i><strong>Estadística Descriptiva:</strong> Uso de <code>describe()</code> y <code>value_counts()</code>.</li>
+                <li class="mb-0"><i class="fa-solid fa-circle-check text-purple me-2"></i><strong>Ingeniería de Datos:</strong> Cruce en memoria vía <code>pd.merge()</code>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Sustentación Académica -->
+    <div class="col-md-12 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4">
+            <div class="d-flex align-items-center mb-3">
+                <div class="icon-shape bg-emerald-light text-emerald rounded-3 me-3">
+                    <i class="fa-solid fa-user-graduate fs-4"></i>
+                </div>
+                <h5 class="m-0 fw-bold text-emerald">Sustentación Académica</h5>
+            </div>
+            <p class="text-muted small">
+                Para la presentación ante el jurado o profesora, este MVP evidencia habilidades avanzadas en:
+            </p>
+            <div class="accordion accordion-flush" id="accordionSustentacion">
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed px-0 py-2 small fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
+                            Cruce Relacional en Memoria
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionSustentacion">
+                        <div class="accordion-body px-0 py-1 text-muted small" style="font-size: 0.8rem;">
+                            Unión relacional (triple merge) uniendo transacciones con catálogos y guías clínicas sin recurrir a motores SQL en el disco duro.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed px-0 py-2 small fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo">
+                            Optimización de Servidor (RAM)
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionSustentacion">
+                        <div class="accordion-body px-0 py-1 text-muted small" style="font-size: 0.8rem;">
+                            Generación dinámica de reportes gráficos en memoria RAM y codificación Base64, evitando almacenar archivos de imagen temporales en el disco del servidor.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

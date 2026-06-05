@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Fila de Gráficos de Riesgo -->
+<div class="row g-4 mb-4">
+    <!-- Gráfico 2: Severidad -->
+    <div class="col-lg-6 col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <h6 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-chart-pie me-2"></i>Distribución de Gravedad de Incidentes</h6>
+            <div class="text-center">
+                <img src="data:image/png;base64,{{ grafico2 }}" class="img-fluid rounded" alt="Gráfico de Gravedad">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gráfico 4: Grupo Etario -->
+    <div class="col-lg-6 col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <h6 class="fw-bold text-indigo mb-3"><i class="fa-solid fa-people-group me-2"></i>Severidad por Grupo Etario (Edad)</h6>
+            <div class="text-center">
+                <img src="data:image/png;base64,{{ grafico4 }}" class="img-fluid rounded" alt="Gráfico por Grupo Etario">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alertas Clínicas del Catálogo Dimensional -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-4">
+            <div class="d-flex align-items-center mb-3">
+                <div class="icon-shape bg-red-light text-red rounded-3 me-3">
+                    <i class="fa-solid fa-circle-radiation fs-4"></i>
+                </div>
+                <h5 class="m-0 fw-bold text-indigo">Alertas Clínicas en Fármacos Pedriáticos (Catálogo)</h5>
+            </div>
+            
+            <p class="text-muted small">
+                Listado de medicamentos en el catálogo dimensional que cuentan con advertencias **LASA (Look-Alike Sound-Alike)** o riesgos especiales de preparación hospitalaria.
+            </p>
+            
+            <div class="row g-4">
+                {% for med in alertas_lasa %}
+                <div class="col-md-6 col-xl-4">
+                    <div class="card border-1 border-light shadow-sm rounded-3 p-3 h-100 position-relative">
+                        <span class="position-absolute top-0 end-0 m-3 badge bg-red text-white text-uppercase rounded-pill" style="font-size: 0.65rem;">
+                            Similitud LASA
+                        </span>
+                        
+                        <h6 class="fw-bold text-indigo mb-1">{{ med.principio_activo }}</h6>
+                        <span class="text-muted small d-block mb-2"><i class="fa-solid fa-tag me-1"></i>ATC: {{ med.codigo_atc }}</span>
+                        
+                        <div class="small text-muted mb-2">
+                            <strong>Vía Aprobada:</strong> {{ med.via_administracion_aprobada }} <br>
+                            <strong>Presentación:</strong> {{ med.presentacion_pediatrica }}
+                        </div>
+                        
+                        <div class="bg-light p-2 rounded small text-danger" style="font-size: 0.75rem;">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                            <strong>Riesgo de Preparación:</strong> {{ med.riesgo_preparacion }}
+                        </div>
+                        
+                        <div class="mt-2 text-muted small" style="font-size: 0.75rem; font-style: italic;">
+                            {{ med.notas_farmacovigilancia }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
